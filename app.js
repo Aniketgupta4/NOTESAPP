@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const express = require("express");
 const app = express();
 const userModel = require("./models/user");
@@ -10,6 +11,7 @@ const crypto = require("crypto");
 const path = require("path");
 const multer = require("multer");
 const upload = require("./config/multerconfig");
+const mongoose = require('mongoose');
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -18,6 +20,20 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
 
+dotenv.config({ path: './config.env' });
+
+const DB = process.env.DATABASE;
+
+mongoose.connect(DB, { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
+})
+.then(() => {
+    console.log("Connected to the database");
+})
+.catch((err) => {
+    console.log("Failed to connect to the database", err);
+});
 
 // multer local storage
 
@@ -204,3 +220,7 @@ app.get("/logout", (req, res) => {
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
+
+
+
+
