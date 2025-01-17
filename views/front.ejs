@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+
+    <!-- Tailwind CSS (CDN version) -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS (CDN version) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Animation for the title */
+        @keyframes textAnimation {
+            0% {
+                transform: translateY(30px) scale(1.1);
+                opacity: 0;
+            }
+            50% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-30px) scale(1.1);
+                opacity: 0;
+            }
+        }
+
+        .animate-text {
+            animation: textAnimation 4s ease-in-out infinite;
+        }
+
+        /* Full-screen section */
+        .main-content {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            flex-direction: column;
+            background-color: #f8f9fa; /* Swapped color for main content */
+            color: #212529; /* Dark text for main content */
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 4rem;
+            line-height: 1.2;
+        }
+
+        @media (min-width: 640px) {
+            h1 {
+                font-size: 6rem;
+            }
+        }
+
+        /* Image Styling */
+        .image-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 50px;
+            z-index: 10;
+        }
+
+        .image-container img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            animation: rotateScaleAnimation 6s infinite ease-in-out;
+        }
+
+        @keyframes rotateScaleAnimation {
+            0% {
+                transform: rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            25% {
+                transform: rotate(90deg) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2);
+                opacity: 1;
+            }
+            75% {
+                transform: rotate(270deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(360deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Bubbles animation */
+        @keyframes bubbleAnimation {
+            0% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            animation: bubbleAnimation linear infinite;
+        }
+
+        .white-bubble {
+            background-color: black;
+        }
+
+        .golden-bubble {
+            background-color: #FFD700;
+        }
+
+        /* Custom positioning and animation durations */
+        .bubble:nth-child(1) {
+            animation-duration: 8s;
+            top: 10%;
+            left: 20%;
+            width: 15px;
+            height: 15px;
+        }
+
+        .bubble:nth-child(2) {
+            animation-duration: 7s;
+            top: 30%;
+            left: 40%;
+            width: 12px;
+            height: 12px;
+        }
+
+        .bubble:nth-child(3) {
+            animation-duration: 6s;
+            top: 50%;
+            left: 60%;
+            width: 10px;
+            height: 10px;
+        }
+
+        .bubble:nth-child(4) {
+            animation-duration: 9s;
+            top: 70%;
+            left: 80%;
+            width: 20px;
+            height: 20px;
+        }
+
+        .bubble:nth-child(5) {
+            animation-duration: 5s;
+            top: 20%;
+            left: 70%;
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Navbar Styles */
+        .navbar-custom {
+            background-color: #e9ecef; /* Dark navbar color */
+        }
+
+        .navbar-custom a {
+            color: black; /* White text color */
+            transition: all 0.3s ease-in-out;
+        }
+
+        .navbar-custom a:hover {
+            color: #3498db; /* Light blue hover color */
+            transform: scale(1.1); /* Button scaling effect */
+        }
+
+        /* Footer Styles */
+        .footer-custom {
+            background-color: #e9ecef; /* Light footer color */
+            padding: 20px 0;
+            color: #212529;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Mobile Menu */
+        @media (max-width: 768px) {
+            .navbar-custom a {
+                display: block;
+                padding: 10px;
+            }
+        }
+
+        /* Button Styling for Login and Sign Up */
+        .navbar-custom .nav-link {
+            background: transparent; /* Transparent background */
+            border: none; /* Remove any border */
+            color: black; /* Text color */
+            font-weight: 600; /* Bold text */
+            padding: 10px 20px; /* Adjust padding for better button size */
+            transition: color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+        }
+
+        /* Hover Effect for Login and Sign Up buttons */
+        .navbar-custom .nav-link:hover {
+            color: #3498db; /* Color change on hover */
+            transform: scale(1.05); /* Slightly enlarge button */
+        }
+    </style>
+</head>
+<body class="bg-white text-dark h-full">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top shadow-lg">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="/" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                <h2 style="color: rgb(255, 179, 0); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; font-size: 36px; letter-spacing: 1px; font-weight: bold;">NotesApp</h2>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/register">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <div class="absolute inset-0 overlay"></div>
+        <div class="relative z-10 text-dark">
+            <h1 class="text-4xl sm:text-6xl font-bold animate-text">
+                &#xf249; Create your <span class="text-yellow-400">Notes &#xf249;</span>
+            </h1>
+            <p class="text-xl sm:text-2xl mt-4">Organize your thoughts and boost your productivity today!</p>
+        </div>
+
+        <!-- Image Gallery -->
+        <div class="image-container">
+            <img src="https://images.pexels.com/photos/1629212/pexels-photo-1629212.jpeg?cs=srgb&dl=pexels-minan1398-1629212.jpg&fm=jpg" alt="Image 1">
+            <img src="https://images.pexels.com/photos/632470/pexels-photo-632470.jpeg?cs=srgb&dl=pexels-frans-van-heerden-201846-632470.jpg&fm=jpg" alt="Image 2">
+            <img src="https://images.pexels.com/photos/265152/pexels-photo-265152.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Image 3">
+        </div>
+
+        <!-- Bubbles animation -->
+        <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
+            <div class="bubble white-bubble" style="width: 15px; height: 15px; top: 10%; left: 20%; animation-duration: 8s;"></div>
+            <div class="bubble white-bubble" style="width: 12px; height: 12px; top: 30%; left: 40%; animation-duration: 7s;"></div>
+            <div class="bubble white-bubble" style="width: 10px; height: 10px; top: 50%; left: 60%; animation-duration: 6s;"></div>
+            <div class="bubble golden-bubble" style="width: 20px; height: 20px; top: 70%; left: 80%; animation-duration: 9s;"></div>
+            <div class="bubble golden-bubble" style="width: 14px; height: 14px; top: 20%; left: 70%; animation-duration: 5s;"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-custom">
+        <div class="container">
+            <p>&copy; NotesApp 2025 | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <!-- Add Bootstrap JS (CDN version) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
